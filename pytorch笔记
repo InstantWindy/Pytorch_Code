@@ -1,0 +1,15 @@
+# 1. pytorch中的最近采样和双线性采样
+```
+F.upsample_nearest：要求输出和输入之间是整数倍关系
+F.upsample_：不要求
+```
+# 2. 模型参数更新
+```
+res50=resnet50(pretrained=False).cuda()
+net=ICNet(num_classes,True).cuda()
+feats = res50(im)
+out1,out2,out3 = net(im,feats)
+optimizer = torch.optim.SGD(net.parameters(), lr=1e-2,momentum=0.9, weight_decay=1e-4)
+```
+  - 只对net中的参数进行了优化更新，res50中的参数没有进行更新
+  - 如果想对res50和net的参数都进行更新，需要把res50写入到net中
